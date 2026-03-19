@@ -28,17 +28,11 @@ input, textarea, select {
     border-radius: 8px;
     border: 1px solid #ccc;
 }
-
 #suggestions {
-    position: absolute;
-    width: calc(100% - 20px);
     background: white;
     border: 1px solid #ccc;
     max-height: 150px;
     overflow-y: auto;
-    border-radius: 8px;
-    z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .suggestion-item {
@@ -49,3 +43,4 @@ input, textarea, select {
 .suggestion-item:hover {
     background: #f0f0f0;
 }
+
