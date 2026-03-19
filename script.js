@@ -1,82 +1,93 @@
-document.addEventListener("DOMContentLoaded", function () {
+const form = document.getElementById("logForm");
+const logsDiv = document.getElementById("logs");
 
-let equipmentData = [];
-
-const departmentSelect = document.getElementById("department");
 const equipmentInput = document.getElementById("equipmentSearch");
 const suggestionsBox = document.getElementById("suggestions");
 
-// 🔥 LOAD EXCEL FROM GITHUB
-fetch("./equipment.xlsx")console.log("Excel loaded:", equipmentData);
-   
-    .then(res => {
-        if (!res.ok) throw new Error("Excel file not found");
-        return res.arrayBuffer();
-    })
-    .then(data => {
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        let json = XLSX.utils.sheet_to_json(sheet);
+// 🔥 ADD YOUR FULL LIST HERE (you can expand later)
+const equipmentList = [
+    "ECG Machine",
+    "Ventilator",
+    "Defibrillator",
+    "Infusion Pump",
+    "Syringe Pump",
+    "MRI Scanner",
+    "CT Scanner",
+    "X-Ray Machine",
+    "Ultrasound Machine",
+    "ABG Analyzer",
+    "OT Table",
+    "Anesthesia Machine",
+    "Patient Monitor",
+    "Oxygen Concentrator",
+    "Dialysis Machine"
+];
 
-        // Clean data
-        equipmentData = json.map(item => ({
-            Department: item.Department?.toString().trim(),
-            Equipment: item.Equipment?.toString().trim()
-        }));
-
-        loadDepartments();
-    })
-    .catch(err => {
-        console.error("Error:", err);
-        alert("Excel not loading. Check file name/path.");
-    });
-
-// 🏥 LOAD DEPARTMENTS
-function loadDepartments() {
-    const departments = [...new Set(equipmentData.map(i => i.Department))];
-
-    departments.forEach(dep => {
-        if (!dep) return;
-
-        const option = document.createElement("option");
-        option.value = dep;
-        option.textContent = dep;
-        departmentSelect.appendChild(option);
-    });
-}
-
-// 🔍 SEARCH
+// 🔍 SEARCH FUNCTION
 equipmentInput.addEventListener("input", function () {
-
     const value = this.value.toLowerCase();
-    const dept = departmentSelect.value;
-
     suggestionsBox.innerHTML = "";
 
     if (!value) return;
 
-    let filtered = equipmentData;
-
-    if (dept) {
-        filtered = filtered.filter(i => i.Department === dept);
-    }
-
-    filtered = filtered.filter(i =>
-        i.Equipment && i.Equipment.toLowerCase().includes(value)
+    const filtered = equipmentList.filter(item =>
+        item.toLowerCase().includes(value)
     );
 
-    filtered.slice(0, 10).forEach(i => {
+    filtered.forEach(item => {
         const div = document.createElement("div");
         div.classList.add("suggestion-item");
-        div.innerText = i.Equipment;
+        div.innerText = item;
 
-        div.onclick = function () {
-            equipmentInput.value = i.Equipment;
+        div.addEventListener("click", function () {
+            equipmentInput.value = item;
             suggestionsBox.innerHTML = "";
-        };
+        });
 
         suggestionsBox.appendChild(div);
     });
 });
 
+// 📦 LOAD SAVED LOGS
+let logs = JSON.parse(localStorage.getItem("logs")) || [];
+
+function displayLogs() {
+    logsDiv.innerHTML = "";
+    logs.forEach(log => {
+        logsDiv.innerHTML += `
+            <div class="log-item">
+                <strong>${log.equipment}</strong><br>
+                Dept: ${log.department}<br>
+                Complaint: ${log.complaint}<br>
+                Solved By: ${log.solvedBy}<br>
+                Time: ${log.time}
+            </div>
+        `;
+    });
+}
+
+// 💾 SAVE FORM
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const log = {
+        equipment: equipmentInput.value,
+        department: document.getElementById("department").value,
+        reportedBy: document.getElementById("reportedBy").value,
+        complaint: document.getElementById("complaint").value,
+        attendedBy: document.getElementById("attendedBy").value,
+        issue: document.getElementById("issue").value,
+        action: document.getElementById("action").value,
+        time: document.getElementById("time").value,
+        solvedBy: document.getElementById("solvedBy").value
+    };
+
+    logs.push(log);
+    localStorage.setItem("logs", JSON.stringify(logs));
+
+    form.reset();
+    suggestionsBox.innerHTML = "";
+    displayLogs();
 });
+
+displayLogs();
