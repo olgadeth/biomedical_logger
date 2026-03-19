@@ -7,7 +7,8 @@ const equipmentInput = document.getElementById("equipmentSearch");
 const suggestionsBox = document.getElementById("suggestions");
 
 // 🔥 LOAD EXCEL FROM GITHUB
-fetch("equipment.xlsx")
+fetch("./equipment.xlsx")console.log("Excel loaded:", equipmentData);
+   
     .then(res => {
         if (!res.ok) throw new Error("Excel file not found");
         return res.arrayBuffer();
