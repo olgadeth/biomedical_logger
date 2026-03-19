@@ -18,33 +18,31 @@ h2, h3 {
 form {
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
-input, textarea, select {
-    width: 100%;
+input, textarea {
     margin: 8px 0;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
 }
-#suggestions {
-    position: relative;
+
+button {
+    padding: 12px;
+    background: #2c7be5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #1a5dc9;
+}
+
+.log-item {
     background: white;
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-}
-
-.suggestion-item {
     padding: 10px;
-    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 8px;
 }
-
-.suggestion-item:hover {
-    background: #eee;
-}
-.suggestion-item:hover {
-    background: #f0f0f0;
-}
-
