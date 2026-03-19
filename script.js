@@ -2,49 +2,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
 let equipmentData = [];
 
-const upload = document.getElementById("uploadExcel");
 const departmentSelect = document.getElementById("department");
 const equipmentInput = document.getElementById("equipmentSearch");
 const suggestionsBox = document.getElementById("suggestions");
 
-// 📂 READ EXCEL
-upload.addEventListener("change", function (e) {
-
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-
-        const data = new Uint8Array(event.target.result);
+// 🔥 LOAD EXCEL FROM GITHUB
+fetch("equipment.xlsx")
+    .then(res => {
+        if (!res.ok) throw new Error("Excel file not found");
+        return res.arrayBuffer();
+    })
+    .then(data => {
         const workbook = XLSX.read(data, { type: "array" });
-
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
         let json = XLSX.utils.sheet_to_json(sheet);
 
-        // 🔥 CLEAN DATA (important fix)
+        // Clean data
         equipmentData = json.map(item => ({
             Department: item.Department?.toString().trim(),
             Equipment: item.Equipment?.toString().trim()
         }));
 
-        console.log("Loaded Data:", equipmentData); // debug
-
         loadDepartments();
-    };
-
-    reader.readAsArrayBuffer(file);
-});
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("Excel not loading. Check file name/path.");
+    });
 
 // 🏥 LOAD DEPARTMENTS
 function loadDepartments() {
-
-    const departments = [...new Set(
-        equipmentData.map(item => item.Department)
-    )];
-
-    departmentSelect.innerHTML = '<option value="">Select Department</option>';
+    const departments = [...new Set(equipmentData.map(i => i.Department))];
 
     departments.forEach(dep => {
         if (!dep) return;
@@ -56,34 +44,33 @@ function loadDepartments() {
     });
 }
 
-// 🔍 SEARCH EQUIPMENT
+// 🔍 SEARCH
 equipmentInput.addEventListener("input", function () {
 
     const value = this.value.toLowerCase();
-    const selectedDept = departmentSelect.value;
+    const dept = departmentSelect.value;
 
     suggestionsBox.innerHTML = "";
 
-    if (!value || equipmentData.length === 0) return;
+    if (!value) return;
 
     let filtered = equipmentData;
 
-    if (selectedDept) {
-        filtered = filtered.filter(item => item.Department === selectedDept);
+    if (dept) {
+        filtered = filtered.filter(i => i.Department === dept);
     }
 
-    filtered = filtered.filter(item =>
-        item.Equipment && item.Equipment.toLowerCase().includes(value)
+    filtered = filtered.filter(i =>
+        i.Equipment && i.Equipment.toLowerCase().includes(value)
     );
 
-    filtered.slice(0, 10).forEach(item => {
-
+    filtered.slice(0, 10).forEach(i => {
         const div = document.createElement("div");
         div.classList.add("suggestion-item");
-        div.innerText = item.Equipment;
+        div.innerText = i.Equipment;
 
         div.onclick = function () {
-            equipmentInput.value = item.Equipment;
+            equipmentInput.value = i.Equipment;
             suggestionsBox.innerHTML = "";
         };
 
