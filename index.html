@@ -1,41 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Equipment Log</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<form id="logForm">
 
-<div class="container">
-    <h2>Equipment Complaint Log</h2>
+    <select id="department" required>
+        <option value="">Select Department</option>
+    </select>
 
-    <form id="logForm">
-       <select id="department">
-    <option value="">Select Department</option>
-</select>
+    <input type="text" id="equipmentSearch" placeholder="Search Equipment..." autocomplete="off" required>
+    <div id="suggestions"></div>
 
-<input type="text" id="equipmentSearch" placeholder="Search Equipment..." autocomplete="off">
-<div id="suggestions"></div>
-        <input type="text" placeholder="Reported By" id="reportedBy" required>
-       <input type="text" id="equipmentSearch" placeholder="Search Equipment..." autocomplete="off" required>
-<div id="suggestions"></div>
-        <input type="text" placeholder="Attended By" id="attendedBy">
-        <textarea placeholder="Issue Identified" id="issue"></textarea>
-        <textarea placeholder="Action Taken" id="action"></textarea>
-        <input type="datetime-local" id="time">
-        <input type="text" placeholder="Solved By" id="solvedBy">
-        
-        <button type="submit">Save Log</button>
-        <input type="file" id="uploadExcel" accept=".xlsx, .xls">
-    </form>
+    <input type="text" placeholder="Reported By" id="reportedBy" required>
 
-    <h3>Logs</h3>
-    <div id="logs"></div>
-</div>
+    <input type="text" placeholder="Attended By" id="attendedBy">
 
-<script src="script.js"></script>
-</body>
-</html>
+    <textarea placeholder="Issue Identified" id="issue"></textarea>
+
+    <textarea placeholder="Action Taken" id="action"></textarea>
+
+    <input type="datetime-local" id="time">
+
+    <input type="text" placeholder="Solved By" id="solvedBy">
+
+    <button type="submit">Save Log</button>
+
+</form>
+
+<!-- Move file upload OUTSIDE form -->
+<input type="file" id="uploadExcel" accept=".xlsx, .xls">
