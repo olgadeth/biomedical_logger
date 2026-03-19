@@ -12,8 +12,12 @@
     <h2>Equipment Complaint Log</h2>
 
     <form id="logForm">
-        <input type="text" placeholder="Equipment Name" id="equipment" required>
-        <input type="text" placeholder="Department" id="department" required>
+       <select id="department">
+    <option value="">Select Department</option>
+</select>
+
+<input type="text" id="equipmentSearch" placeholder="Search Equipment..." autocomplete="off">
+<div id="suggestions"></div>
         <input type="text" placeholder="Reported By" id="reportedBy" required>
        <input type="text" id="equipmentSearch" placeholder="Search Equipment..." autocomplete="off" required>
 <div id="suggestions"></div>
@@ -24,6 +28,7 @@
         <input type="text" placeholder="Solved By" id="solvedBy">
         
         <button type="submit">Save Log</button>
+        <input type="file" id="uploadExcel" accept=".xlsx, .xls">
     </form>
 
     <h3>Logs</h3>
