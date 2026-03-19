@@ -46,3 +46,19 @@ button:hover {
     margin-top: 10px;
     border-radius: 8px;
 }
+#suggestions {
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    border-radius: 8px;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background: #f0f0f0;
+}
