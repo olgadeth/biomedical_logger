@@ -3,55 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biomedical Grid Hub</title>
+    <title>EQUIP - Biomedical Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="app-header">
-        <h1>Biomedical Grid Hub</h1>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search by BMID..." onkeyup="filterCards()">
-        </div>
-    </header>
+    <div class="app-container">
+        <header>
+            <h1>EQUIP</h1>
+            <div class="status-bar">
+                <p class="status-main">3 Critical Issues Today | 5 Items Pending</p>
+                <p class="status-details">Pending: Vent-04, Monitor-X1, Infusion-P8, Dialysis-02, ECG-09</p>
+            </div>
+        </header>
 
-    <div class="status-bar">
-        <div class="stats">
-            <span class="critical">3 Critical Issues Today</span>
-            <span class="divider">|</span>
-            <span>5 Items Pending</span>
-        </div>
-        <div class="sync-status">
-            <span>☁ Synced</span>
-        </div>
+        <section class="search-container">
+            <input type="text" id="searchInput" placeholder="Search tools or logs..." onkeyup="filterCards()">
+        </section>
+
+        <main class="grid-container" id="cardGrid">
+            
+            <a href="fault_log.html" class="card critical" data-name="medical device fault log">
+                <div class="icon">⚠️</div>
+                <h3>Medical Device Fault Log</h3>
+                <p>Urgent repairs & errors</p>
+            </a>
+
+            <a href="equipment.html" class="card" data-name="equipment library">
+                <div class="icon">📋</div>
+                <h3>Equipment Library</h3>
+                <p>Digital inventory</p>
+            </a>
+
+            <a href="loan.html" class="card" data-name="loan equipment">
+                <div class="icon">🔄</div>
+                <h3>Loan Equipment</h3>
+                <p>Track outgoing assets</p>
+            </a>
+
+            <a href="pending.html" class="card" data-name="pending status">
+                <div class="icon">⏳</div>
+                <h3>Pending Status</h3>
+                <p>Waiting for parts/service</p>
+            </a>
+
+            <a href="create_asset.html" class="card" data-name="create asset">
+                <div class="icon">➕</div>
+                <h3>Create Asset</h3>
+                <p>Add new equipment</p>
+            </a>
+
+        </main>
     </div>
-
-    <main class="grid-container" id="gridContainer">
-        <a href="fault_log.html" class="card critical-card" data-title="Medical Device Fault Log">
-            <div class="card-icon">⚠️</div>
-            <h3>Medical Device Fault Log</h3>
-        </a>
-
-        <a href="equipment.html" class="card" data-title="Equipment Library">
-            <div class="card-icon">📋</div>
-            <h3>Equipment Library</h3>
-        </a>
-
-        <a href="loan.html" class="card" data-title="Loan Equipment">
-            <div class="card-icon">🔄</div>
-            <h3>Loan Equipment</h3>
-        </a>
-
-        <a href="pending.html" class="card" data-title="Pending Status">
-            <div class="card-icon">⏳</div>
-            <h3>Pending Status</h3>
-        </a>
-
-        <a href="create_asset.html" class="card" data-title="Create Asset">
-            <div class="card-icon">➕</div>
-            <h3>Create Asset</h3>
-        </a>
-    </main>
 
     <script src="script.js"></script>
 </body>
