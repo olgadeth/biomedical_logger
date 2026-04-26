@@ -1,47 +1,30 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-body { background-color: #f4f7f6; display: flex; justify-content: center; }
+/* ... [Previous CSS from above] ... */
 
-.app-container { width: 100%; max-width: 480px; background: white; min-height: 100vh; padding: 20px; box-shadow: 0 0 15px rgba(0,0,0,0.05); }
+.view-all-link {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    color: #4285f4;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-header { margin-bottom: 20px; }
-.nav-links { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.back-btn, .history-link { text-decoration: none; font-size: 0.85rem; font-weight: 600; color: #4285f4; }
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 0.95rem;
+    resize: none;
+}
 
-h1 { font-size: 1.4rem; color: #2c3e50; border-left: 4px solid #4285f4; padding-left: 10px; }
-
-.form-container { background: #fafafa; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 30px; }
-.input-group { margin-bottom: 15px; }
-.input-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: #666; }
-
-input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; transition: 0.2s; }
-input:focus { border-color: #4285f4; background: #fff; }
-input[readonly] { background-color: #f0f0f0; border-style: dashed; }
-
-.readonly-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-.priority-selector { display: flex; gap: 8px; }
-.p-btn { flex: 1; text-align: center; padding: 10px; border-radius: 8px; background: #eee; cursor: pointer; border: 2px solid transparent; font-size: 0.8rem; }
-.p-btn.low { color: #2d6a4f; }
-.p-btn.med { color: #d97706; }
-.p-btn.crit { color: #dc2626; }
-.p-btn:has(input:checked) { border-color: currentColor; background: white; font-weight: bold; }
-.p-btn input { display: none; }
-
-.button-group { display: flex; gap: 10px; margin-top: 10px; }
-button { flex: 1; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-button:active { transform: scale(0.96); }
-.btn-submit { background: #4285f4; color: white; box-shadow: 0 4px 10px rgba(66,133,244,0.3); }
-.btn-reset { background: #f1f3f4; color: #5f6368; }
-
-.hidden { display: none; }
-.success-msg { background: #d1fae5; color: #065f46; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 20px; animation: fadeIn 0.3s; }
-
-.log-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.03); border-left: 6px solid #ccc; }
-.log-card.Low { border-left-color: #4ade80; }
-.log-card.Medium { border-left-color: #fbbf24; }
-.log-card.Critical { border-left-color: #f87171; }
-.log-card h4 { font-size: 1rem; margin-bottom: 4px; }
-.log-card p { font-size: 0.8rem; color: #555; }
-.log-card .meta { font-size: 0.7rem; color: #999; margin-top: 10px; display: flex; justify-content: space-between; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.log-card .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: #eee;
+    margin-top: 5px;
+}
