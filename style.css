@@ -1,126 +1,35 @@
-/* General Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-}
+/**
+ * Filter Cards based on search input
+ */
+function filterCards() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toLowerCase();
+    const gridContainer = document.getElementById('gridContainer');
+    const cards = gridContainer.getElementsByClassName('card');
 
-body {
-    background-color: #f4f7f9;
-    color: #333;
-    padding-bottom: 30px;
-}
-
-/* Header & Search */
-.app-header {
-    background-color: #ffffff;
-    padding: 25px 20px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.app-header h1 {
-    font-size: 1.5rem;
-    color: #1a3a5a;
-    margin-bottom: 15px;
-}
-
-.search-container input {
-    width: 100%;
-    max-width: 400px;
-    padding: 12px 20px;
-    border-radius: 25px;
-    border: 1px solid #ddd;
-    outline: none;
-    font-size: 1rem;
-    transition: border 0.3s;
-}
-
-.search-container input:focus {
-    border-color: #007bff;
-}
-
-/* Status Bar */
-.status-bar {
-    background: #1a3a5a;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-}
-
-.critical {
-    color: #ffcc00;
-    font-weight: bold;
-}
-
-.divider {
-    margin: 0 10px;
-    opacity: 0.5;
-}
-
-.sync-status {
-    color: #a0d4ff;
-}
-
-/* Grid Layout */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 Columns */
-    gap: 15px;
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Card Design */
-.card {
-    background: white;
-    text-decoration: none;
-    color: inherit;
-    padding: 25px 15px;
-    border-radius: 16px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid transparent;
-}
-
-.card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-}
-
-.card-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.card h3 {
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-/* Highlighted Card (Fault Log) */
-.critical-card {
-    background: #fff5f5;
-    border: 1px solid #ffcfcf;
-}
-
-.critical-card .card-icon {
-    color: #e53e3e;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 350px) {
-    .grid-container {
-        grid-template-columns: 1fr;
+    for (let i = 0; i < cards.length; i++) {
+        let title = cards[i].getAttribute('data-title');
+        
+        if (title.toLowerCase().indexOf(filter) > -1) {
+            cards[i].style.display = ""; // Show
+        } else {
+            cards[i].style.display = "none"; // Hide
+        }
     }
 }
+
+/**
+ * Add click feedback for all cards
+ */
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function(e) {
+        const destination = this.getAttribute('data-title');
+        console.log(`[DEBUG]: Navigating to ${destination}...`);
+        
+        // Simple click effect (shrink slightly)
+        this.style.transform = "scale(0.95)";
+        setTimeout(() => {
+            this.style.transform = "scale(1)";
+        }, 100);
+    });
+});
