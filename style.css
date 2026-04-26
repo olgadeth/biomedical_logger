@@ -1,35 +1,132 @@
-/**
- * Filter Cards based on search input
- */
-function filterCards() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toLowerCase();
-    const gridContainer = document.getElementById('gridContainer');
-    const cards = gridContainer.getElementsByClassName('card');
-
-    for (let i = 0; i < cards.length; i++) {
-        let title = cards[i].getAttribute('data-title');
-        
-        if (title.toLowerCase().indexOf(filter) > -1) {
-            cards[i].style.display = ""; // Show
-        } else {
-            cards[i].style.display = "none"; // Hide
-        }
-    }
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/**
- * Add click feedback for all cards
- */
-document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', function(e) {
-        const destination = this.getAttribute('data-title');
-        console.log(`[DEBUG]: Navigating to ${destination}...`);
-        
-        // Simple click effect (shrink slightly)
-        this.style.transform = "scale(0.95)";
-        setTimeout(() => {
-            this.style.transform = "scale(1)";
-        }, 100);
-    });
-});
+body {
+    background-color: #f4f7f6; /* Soft grey/off-white */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 480px; /* Mobile style width */
+    background-color: #ffffff;
+    min-height: 100vh;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+/* Header & Status */
+header {
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #2c3e50;
+    letter-spacing: -1px;
+    margin-bottom: 15px;
+}
+
+.status-bar {
+    background-color: #e8f0fe;
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 5px solid #4285f4;
+}
+
+.status-main {
+    font-weight: bold;
+    color: #1a73e8;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.status-details {
+    font-size: 0.75rem;
+    color: #5f6368;
+    line-height: 1.4;
+}
+
+/* Search Bar */
+.search-container {
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: 0.3s;
+    font-size: 1rem;
+}
+
+#searchInput:focus {
+    border-color: #4285f4;
+    box-shadow: 0 0 8px rgba(66, 133, 244, 0.2);
+}
+
+/* Dashboard Grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+/* Card Design */
+.card {
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #eee;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.card:active {
+    transform: scale(0.98);
+}
+
+.card.critical {
+    background-color: #fff5f5;
+    border: 1px solid #feb2b2;
+}
+
+.card.critical .icon {
+    color: #e53e3e;
+}
+
+.icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    color: #2d3748;
+}
+
+.card p {
+    font-size: 0.85rem;
+    color: #718096;
+}
