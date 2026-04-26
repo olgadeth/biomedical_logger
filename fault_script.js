@@ -68,3 +68,31 @@ function displayRecentCard(data) {
     `;
     logList.prepend(card);
 }
+// ... existing equipmentData ...
+
+faultForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const faultData = {
+        id: Date.now(),
+        bmId: document.getElementById('bmId').value,
+        name: document.getElementById('equipName').value,
+        sn: document.getElementById('serialNum').value,
+        dept: document.getElementById('dept').value,
+        type: document.getElementById('faultType').value === 'Other' ? document.getElementById('otherIssue').value : document.getElementById('faultType').value,
+        priority: document.querySelector('input[name="priority"]:checked').value,
+        reportedBy: document.getElementById('reportedBy').value,
+        attendedBy: document.getElementById('attendedBy').value,
+        status: document.getElementById('currentStatus').value,
+        notes: document.getElementById('notes').value,
+        timestamp: new Date().toLocaleString()
+    };
+
+    // Save to LocalStorage
+    let existingLogs = JSON.parse(localStorage.getItem('equip_fault_logs')) || [];
+    existingLogs.push(faultData);
+    localStorage.setItem('equip_fault_logs', JSON.stringify(existingLogs));
+
+    alert("✅ Fault logged successfully!");
+    window.location.href = "view_logs.html";
+});
