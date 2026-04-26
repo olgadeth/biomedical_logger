@@ -3,32 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Equipment Log</title>
+    <title>Biomedical Grid Hub</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <h2>Equipment Complaint Log</h2>
+    <header class="app-header">
+        <h1>Biomedical Grid Hub</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by BMID..." onkeyup="filterCards()">
+        </div>
+    </header>
 
-    <form id="logForm">
-        <input type="text" placeholder="Equipment Name" id="equipment" required>
-        <input type="text" placeholder="Department" id="department" required>
-        <input type="text" placeholder="Reported By" id="reportedBy" required>
-        <textarea placeholder="Complaint" id="complaint" required></textarea>
-        <input type="text" placeholder="Attended By" id="attendedBy">
-        <textarea placeholder="Issue Identified" id="issue"></textarea>
-        <textarea placeholder="Action Taken" id="action"></textarea>
-        <input type="datetime-local" id="time">
-        <input type="text" placeholder="Solved By" id="solvedBy">
-        
-        <button type="submit">Save Log</button>
-    </form>
+    <div class="status-bar">
+        <div class="stats">
+            <span class="critical">3 Critical Issues Today</span>
+            <span class="divider">|</span>
+            <span>5 Items Pending</span>
+        </div>
+        <div class="sync-status">
+            <span>☁ Synced</span>
+        </div>
+    </div>
 
-    <h3>Logs</h3>
-    <div id="logs"></div>
-</div>
+    <main class="grid-container" id="gridContainer">
+        <a href="fault_log.html" class="card critical-card" data-title="Medical Device Fault Log">
+            <div class="card-icon">⚠️</div>
+            <h3>Medical Device Fault Log</h3>
+        </a>
 
-<script src="script.js"></script>
+        <a href="equipment.html" class="card" data-title="Equipment Library">
+            <div class="card-icon">📋</div>
+            <h3>Equipment Library</h3>
+        </a>
+
+        <a href="loan.html" class="card" data-title="Loan Equipment">
+            <div class="card-icon">🔄</div>
+            <h3>Loan Equipment</h3>
+        </a>
+
+        <a href="pending.html" class="card" data-title="Pending Status">
+            <div class="card-icon">⏳</div>
+            <h3>Pending Status</h3>
+        </a>
+
+        <a href="create_asset.html" class="card" data-title="Create Asset">
+            <div class="card-icon">➕</div>
+            <h3>Create Asset</h3>
+        </a>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
