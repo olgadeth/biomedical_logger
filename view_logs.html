@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EQUIP - View Logs</title>
+    <link rel="stylesheet" href="view_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <a href="index.html" class="back-btn">← Back to Home</a>
+            <h1>All Fault Logs</h1>
+            
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="All">All</button>
+                <button class="filter-btn" data-filter="Critical">Critical</button>
+                <button class="filter-btn" data-filter="Medium">Medium</button>
+                <button class="filter-btn" data-filter="Low">Low</button>
+            </div>
+        </header>
+
+        <main id="logDisplayContainer">
+            </main>
+
+        <div class="footer-actions">
+            <button id="clearAllBtn" class="btn-clear">🗑️ Clear All Logs</button>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Update Repair Status</h3>
+            <input type="hidden" id="editId">
+            <label>Attended By:</label>
+            <input type="text" id="editAttendedBy">
+            <label>Status:</label>
+            <select id="editStatus">
+                <option value="Not Attended Yet">Not Attended Yet</option>
+                <option value="Incomplete">Incomplete</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <label>Notes:</label>
+            <textarea id="editNotes"></textarea>
+            <div class="modal-btns">
+                <button onclick="saveEdit()" class="btn-submit">Save Changes</button>
+                <button onclick="closeModal()" class="btn-reset">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="view_script.js"></script>
+</body>
+</html>
