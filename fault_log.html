@@ -9,9 +9,11 @@
 <body>
     <div class="app-container">
         <header>
-            <a href="index.html" class="back-btn">← Back to Home</a>
+            <div class="header-top">
+                <a href="index.html" class="back-btn">← Back to Home</a>
+                <a href="view_logs.html" class="nav-link">View All Logs</a>
+            </div>
             <h1>Medical Device Fault Log</h1>
-            <a href="view_logs.html" class="view-all-link">View All Logs →</a>
         </header>
 
         <section class="form-container">
@@ -44,12 +46,7 @@
 
                 <div class="input-group">
                     <label>👤 Reported By</label>
-                    <input type="text" id="reportedBy" required placeholder="Name of reporter">
-                </div>
-
-                <div class="input-group">
-                    <label>🔧 Attended By</label>
-                    <input type="text" id="attendedBy" placeholder="Technician name">
+                    <input type="text" id="reportedBy" required placeholder="Enter name">
                 </div>
 
                 <div class="input-group">
@@ -65,7 +62,7 @@
                 </div>
 
                 <div class="input-group hidden" id="otherIssueContainer">
-                    <input type="text" id="otherIssue" placeholder="Specify other issue">
+                    <input type="text" id="otherIssue" placeholder="Describe issue">
                 </div>
 
                 <div class="input-group">
@@ -75,6 +72,14 @@
                         <label class="p-btn med"><input type="radio" name="priority" value="Medium"> Med</label>
                         <label class="p-btn crit"><input type="radio" name="priority" value="Critical"> Crit</label>
                     </div>
+                </div>
+
+                <hr>
+                <p class="section-divider">Initial Repair Details</p>
+
+                <div class="input-group">
+                    <label>🔧 Attended By</label>
+                    <input type="text" id="attendedBy" placeholder="Technician Name">
                 </div>
 
                 <div class="input-group">
@@ -88,7 +93,7 @@
 
                 <div class="input-group">
                     <label>📝 Notes</label>
-                    <textarea id="notes" rows="3" placeholder="Additional details..."></textarea>
+                    <textarea id="notes" rows="3" placeholder="Repair notes..."></textarea>
                 </div>
 
                 <div class="button-group">
@@ -96,13 +101,6 @@
                     <button type="reset" class="btn-reset" id="resetBtn">🔄 Reset</button>
                 </div>
             </form>
-        </section>
-
-        <div id="successMsg" class="success-msg hidden">✅ Fault logged and saved!</div>
-
-        <section class="logs-section">
-            <h2>Recent Entries (This Session)</h2>
-            <div id="logList"></div>
         </section>
     </div>
     <script src="fault_script.js"></script>
