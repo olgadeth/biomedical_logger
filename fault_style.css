@@ -1,0 +1,179 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    background: white;
+    min-height: 100vh;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+}
+
+/* Header */
+header {
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #4285f4;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+}
+
+/* Form Styling */
+.form-container {
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+input[readonly] {
+    background-color: #f0f0f0;
+    color: #777;
+    border-style: dashed;
+}
+
+.readonly-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* Priority Selector */
+.priority-selector {
+    display: flex;
+    gap: 10px;
+}
+
+.p-btn {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background: #eee;
+}
+
+.p-btn.low { color: #2d6a4f; }
+.p-btn.med { color: #d97706; }
+.p-btn.crit { color: #dc2626; }
+
+.p-btn:has(input:checked) {
+    border-color: currentColor;
+    background: white;
+    font-weight: bold;
+}
+
+.p-btn input { display: none; }
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+button:active { transform: scale(0.95); }
+
+.btn-submit { background: #4285f4; color: white; }
+.btn-reset { background: #eee; color: #333; }
+
+/* Dynamic Classes */
+.hidden { display: none; }
+
+.success-msg {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Logs */
+.logs-section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.log-card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-left: 6px solid #ccc;
+    position: relative;
+}
+
+.log-card.Low { border-left-color: #4ade80; }
+.log-card.Medium { border-left-color: #fbbf24; }
+.log-card.Critical { border-left-color: #f87171; }
+
+.log-card h4 { font-size: 1rem; margin-bottom: 5px; }
+.log-card p { font-size: 0.8rem; color: #666; margin: 2px 0; }
+.log-card .timestamp {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 8px;
+}
+
+.empty-msg {
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+}
