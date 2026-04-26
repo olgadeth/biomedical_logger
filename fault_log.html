@@ -7,14 +7,11 @@
     <link rel="stylesheet" href="fault_style.css">
 </head>
 <body>
-
     <div class="app-container">
         <header>
-            <div class="nav-links">
-                <a href="index.html" class="back-btn">← Home</a>
-                <a href="history.html" class="history-link">View All Logs 📜</a>
-            </div>
+            <a href="index.html" class="back-btn">← Back to Home</a>
             <h1>Medical Device Fault Log</h1>
+            <a href="view_logs.html" class="view-all-link">View All Logs →</a>
         </header>
 
         <section class="form-container">
@@ -31,11 +28,11 @@
 
                 <div class="readonly-grid">
                     <div class="input-group">
-                        <label>Equipment</label>
+                        <label>Equipment Name</label>
                         <input type="text" id="equipName" readonly>
                     </div>
                     <div class="input-group">
-                        <label>Serial No.</label>
+                        <label>Serial Number</label>
                         <input type="text" id="serialNum" readonly>
                     </div>
                 </div>
@@ -46,8 +43,13 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="reportedBy">👤 Reported By</label>
-                    <input type="text" id="reportedBy" placeholder="Enter your name" required>
+                    <label>👤 Reported By</label>
+                    <input type="text" id="reportedBy" required placeholder="Name of reporter">
+                </div>
+
+                <div class="input-group">
+                    <label>🔧 Attended By</label>
+                    <input type="text" id="attendedBy" placeholder="Technician name">
                 </div>
 
                 <div class="input-group">
@@ -63,8 +65,7 @@
                 </div>
 
                 <div class="input-group hidden" id="otherIssueContainer">
-                    <label for="otherIssue">Please Specify</label>
-                    <input type="text" id="otherIssue" placeholder="Describe issue">
+                    <input type="text" id="otherIssue" placeholder="Specify other issue">
                 </div>
 
                 <div class="input-group">
@@ -77,8 +78,17 @@
                 </div>
 
                 <div class="input-group">
-                    <label>📸 Upload Image</label>
-                    <input type="file" accept="image/*" id="faultImg">
+                    <label>📊 Current Status</label>
+                    <select id="currentStatus">
+                        <option value="Not Attended Yet">Not Attended Yet</option>
+                        <option value="Incomplete">Incomplete</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>📝 Notes</label>
+                    <textarea id="notes" rows="3" placeholder="Additional details..."></textarea>
                 </div>
 
                 <div class="button-group">
@@ -88,16 +98,13 @@
             </form>
         </section>
 
-        <div id="successMsg" class="success-msg hidden">✅ Fault logged successfully</div>
+        <div id="successMsg" class="success-msg hidden">✅ Fault logged and saved!</div>
 
         <section class="logs-section">
-            <h2>Today's Activity</h2>
-            <div id="logList">
-                <p class="empty-msg">No logs recorded in this session.</p>
-            </div>
+            <h2>Recent Entries (This Session)</h2>
+            <div id="logList"></div>
         </section>
     </div>
-
     <script src="fault_script.js"></script>
 </body>
 </html>
