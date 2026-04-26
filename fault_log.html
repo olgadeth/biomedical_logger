@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EQUIP - Fault Log</title>
+    <link rel="stylesheet" href="fault_style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <a href="index.html" class="back-btn">← Back to Home</a>
+            <h1>Medical Device Fault Log</h1>
+        </header>
+
+        <section class="form-container">
+            <form id="faultForm">
+                <div class="input-group">
+                    <label for="bmId">🏥 BM ID</label>
+                    <select id="bmId" required>
+                        <option value="">Select Asset ID</option>
+                        <option value="BM001">BM001 - Ventilator</option>
+                        <option value="BM002">BM002 - Infusion Pump</option>
+                        <option value="BM003">BM003 - ECG Machine</option>
+                    </select>
+                </div>
+
+                <div class="readonly-grid">
+                    <div class="input-group">
+                        <label>Equipment Name</label>
+                        <input type="text" id="equipName" readonly placeholder="Auto-filled">
+                    </div>
+                    <div class="input-group">
+                        <label>Serial Number</label>
+                        <input type="text" id="serialNum" readonly placeholder="Auto-filled">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Department</label>
+                    <input type="text" id="dept" readonly placeholder="Auto-filled">
+                </div>
+
+                <div class="input-group">
+                    <label for="faultType">⚠️ Fault Type</label>
+                    <select id="faultType" required>
+                        <option value="">Select Issue Type</option>
+                        <option value="Power Issue">Power Issue</option>
+                        <option value="Display Error">Display Error</option>
+                        <option value="Alarm Failure">Alarm Failure</option>
+                        <option value="Calibration Issue">Calibration Issue</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="input-group hidden" id="otherIssueContainer">
+                    <label for="otherIssue">Please Specify</label>
+                    <input type="text" id="otherIssue" placeholder="Describe the fault">
+                </div>
+
+                <div class="input-group">
+                    <label>🚨 Priority</label>
+                    <div class="priority-selector">
+                        <label class="p-btn low"><input type="radio" name="priority" value="Low" required> Low</label>
+                        <label class="p-btn med"><input type="radio" name="priority" value="Medium"> Med</label>
+                        <label class="p-btn crit"><input type="radio" name="priority" value="Critical"> Crit</label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>📸 Upload Image (Optional)</label>
+                    <input type="file" accept="image/*" id="faultImg">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn-submit">✅ Submit Fault</button>
+                    <button type="reset" class="btn-reset" id="resetBtn">🔄 Reset</button>
+                </div>
+            </form>
+        </section>
+
+        <div id="successMsg" class="success-msg hidden">✅ Fault logged successfully</div>
+
+        <section class="logs-section">
+            <h2>Recent Fault Logs</h2>
+            <div id="logList">
+                <p class="empty-msg">No faults logged yet.</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="fault_script.js"></script>
+</body>
+</html>
