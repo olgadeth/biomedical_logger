@@ -280,3 +280,43 @@ canvas {
     border-radius: 6px; 
     cursor: pointer; 
 }
+/* Fix the Dashboard Wrapper to ensure it centers and scales */
+.dashboard-wrapper { 
+    padding: 20px; 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Ensure KPI Cards stay in one row and don't wrap weirdly */
+.kpi-container { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+    gap: 20px; 
+}
+
+/* Fix for the Table: This prevents the 'shattered' look on small screens */
+.table-outer { 
+    background: white; 
+    border-radius: 10px; 
+    border: 1px solid #dee2e6;
+    overflow-x: auto; /* Adds horizontal scroll if table is too wide */
+    max-height: 500px; 
+    overflow-y: auto;
+}
+
+/* Fix for the Analytics Grid */
+.analytics-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+    gap: 25px; 
+    margin-top: 20px; 
+}
+
+/* Ensure Charts don't overflow their containers */
+canvas {
+    max-width: 100% !important;
+    height: auto !important;
+}
