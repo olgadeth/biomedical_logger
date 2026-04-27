@@ -3,85 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EQUIP - Equipment Library</title>
+    <title>EQUIP - Professional Asset Library</title>
     <link rel="stylesheet" href="equipment_style.css">
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <a href="index.html" class="back-btn">← Back to Home</a>
-            <h1>Equipment Library</h1>
-            <div class="header-actions">
-                <button id="showAddFormBtn" class="btn-primary">+ Add New Asset</button>
+    <div class="dashboard-wrapper">
+        <header class="main-header">
+            <div class="header-left">
+                <a href="index.html" class="back-link">← Dashboard</a>
+                <h1>Equipment Library</h1>
+                <p class="subtitle">Biomedical Asset Management Dashboard</p>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <input type="text" id="globalSearch" placeholder="Search BM ID or Name..." onkeyup="handleSearch()">
+                </div>
+                <button class="add-btn" onclick="openModal()">➕ Add Equipment</button>
             </div>
         </header>
 
-        <section class="controls">
-            <input type="text" id="librarySearch" placeholder="Search by Name or BM ID..." onkeyup="filterEquipment()">
-            <div class="filter-tabs">
-                <button class="filter-tab active" data-status="All">All</button>
-                <button class="filter-tab" data-status="Active">Active</button>
-                <button class="filter-tab" data-status="Maintenance">Repair</button>
-                <button class="filter-tab" data-status="Decommissioned">Retired</button>
+        <section class="kpi-container">
+            <div class="kpi-card">
+                <div class="kpi-icon blue">📦</div>
+                <div class="kpi-data">
+                    <span id="totalCount" class="kpi-number">0</span>
+                    <span class="kpi-label">Total Assets</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon green">✅</div>
+                <div class="kpi-data">
+                    <span id="activeCount" class="kpi-number">0</span>
+                    <span class="kpi-label">Active</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon orange">🔧</div>
+                <div class="kpi-data">
+                    <span id="maintenanceCount" class="kpi-number">0</span>
+                    <span class="kpi-label">Maintenance</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon red">🚨</div>
+                <div class="kpi-data">
+                    <span id="criticalCount" class="kpi-number">0</span>
+                    <span class="kpi-label">Critical Downtime</span>
+                </div>
             </div>
         </section>
 
-        <main id="equipmentList" class="grid-container">
-            </main>
+        <section class="table-filters">
+            <select id="deptFilter" onchange="applyFilters()">
+                <option value="">All Departments</option>
+                <option value="ICU">ICU</option>
+                <option value="Radiology">Radiology</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="OT">Operation Theatre</option>
+            </select>
+            <select id="healthFilter" onchange="applyFilters()">
+                <option value="">All Health Statuses</option>
+                <option value="Good">Good</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Critical">Critical</option>
+            </select>
+        </section>
 
-        <div id="addModal" class="modal hidden">
-            <div class="modal-content">
-                <h3>Register New Equipment</h3>
-                <form id="addEquipForm">
-                    <input type="text" id="bmId" placeholder="BM ID (e.g. BM001)" required>
-                    <input type="text" id="equipName" placeholder="Equipment Name" required>
-                    <input type="text" id="modelNum" placeholder="Model Number" required>
-                    <input type="text" id="make" placeholder="Manufacturer" required>
-                    <input type="text" id="dept" placeholder="Department" required>
-                    <label>Installation Date</label>
-                    <input type="date" id="installDate" required>
-                    <select id="status">
-                        <option value="Active">Active</option>
-                        <option value="Under Maintenance">Under Maintenance</option>
-                        <option value="Decommissioned">Decommissioned</option>
-                    </select>
-                    <div class="modal-btns">
-                        <button type="submit" class="btn-submit">Save Asset</button>
-                        <button type="button" class="btn-close" onclick="closeModal('addModal')">Cancel</button>
-                    </div>
-                </form>
-            </div>
+        <div class="table-outer">
+            <table id="assetTable">
+                <thead>
+                    <tr>
+                        <th>BM ID</th>
+                        <th>Equipment Name</th>
+                        <th>Make/Model</th>
+                        <th>Department</th>
+                        <th>Installed By</th>
+                        <th>Spare Parts</th>
+                        <th>Last Service</th>
+                        <th>Downtime</th>
+                        <th>Health</th>
+                        <th>Manual</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
         </div>
 
-        <div id="detailsModal" class="modal hidden">
-            <div class="modal-content wide">
-                <span class="close-x" onclick="closeModal('detailsModal')">&times;</span>
-                <div id="detailsContent">
-                    </div>
+        <section class="analytics-grid">
+            <div class="chart-container">
+                <h3>Asset Status Distribution</h3>
+                <div id="statusChart" class="pie-chart-mock"></div>
+                <div class="legend" id="statusLegend"></div>
             </div>
-        </div>
-
-        <div id="issueModal" class="modal hidden">
-            <div class="modal-content">
-                <h3>Add Service/Issue Entry</h3>
-                <form id="issueForm">
-                    <input type="hidden" id="issueTargetId">
-                    <select id="issueType" required>
-                        <option value="Fault">Fault Log</option>
-                        <option value="Maintenance">Maintenance/PPM</option>
-                        <option value="Service">General Service</option>
-                    </select>
-                    <input type="date" id="issueDate" required>
-                    <textarea id="issueDesc" placeholder="Describe the event or work done..." required></textarea>
-                    <div class="modal-btns">
-                        <button type="submit" class="btn-submit">Add to History</button>
-                        <button type="button" class="btn-close" onclick="closeModal('issueModal')">Cancel</button>
-                    </div>
-                </form>
+            <div class="chart-container">
+                <h3>Downtime Analysis (Days)</h3>
+                <div class="bar-chart-mock" id="downtimeBars"></div>
             </div>
-        </div>
+        </section>
     </div>
 
-    <script src="equipment_script.js"></script>
-</body>
-</html>
+    <div id="equipModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Register New Asset</h2>
+            <form id="equipForm">
+                <input type="hidden" id="editIndex">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>BM ID*</label>
+                        <input type="text" id="bmId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Equipment Name*</label>
+                        <input type="text" id="equipName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Manufacturer</label>
+                        <input type="text" id="make" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Model Number</label>
+                        <input type="text" id="modelNum" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Installation Date</label>
+                        <input type="date" id="installDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Installed By</label>
+                        <input type="text" id="installedBy">
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select id="department">
+                            <option value="ICU">ICU</option>
+                            <option value="Radiology">Radiology</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="OT">Operation Theatre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Service Date</label>
+                        <input type="date" id="serviceDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Spare Parts Available</label>
+                        <input type="text" id="spares">
+                    </div>
