@@ -91,18 +91,21 @@
             </table>
         </div>
 
-        <section class="analytics-grid">
-            <div class="chart-container">
-                <h3>Asset Status Distribution</h3>
-                <div id="statusChart" class="pie-chart-mock"></div>
-                <div class="legend" id="statusLegend"></div>
-            </div>
-            <div class="chart-container">
-                <h3>Downtime Analysis (Days)</h3>
-                <div class="bar-chart-mock" id="downtimeBars"></div>
-            </div>
-        </section>
+       <section class="analytics-grid">
+    <div class="chart-container">
+        <h3>Asset Status Distribution</h3>
+        <canvas id="statusPieChart" width="300" height="300"></canvas>
+        <div class="legend" id="statusLegend"></div>
     </div>
+    <div class="chart-container">
+        <h3>Downtime Analysis (Top 15 Devices)</h3>
+        <canvas id="downtimeBarChart" width="500" height="300"></canvas>
+    </div>
+    <div class="chart-container full-width">
+        <h3>Department Distribution</h3>
+        <canvas id="deptBarChart" width="800" height="300"></canvas>
+    </div>
+</section>
 
     <div id="equipModal" class="modal">
         <div class="modal-content">
