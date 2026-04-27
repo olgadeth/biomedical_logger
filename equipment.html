@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EQUIP - Equipment Library</title>
+    <link rel="stylesheet" href="equipment_style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <a href="index.html" class="back-btn">← Back to Home</a>
+            <h1>Equipment Library</h1>
+            <div class="header-actions">
+                <button id="showAddFormBtn" class="btn-primary">+ Add New Asset</button>
+            </div>
+        </header>
+
+        <section class="controls">
+            <input type="text" id="librarySearch" placeholder="Search by Name or BM ID..." onkeyup="filterEquipment()">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-status="All">All</button>
+                <button class="filter-tab" data-status="Active">Active</button>
+                <button class="filter-tab" data-status="Maintenance">Repair</button>
+                <button class="filter-tab" data-status="Decommissioned">Retired</button>
+            </div>
+        </section>
+
+        <main id="equipmentList" class="grid-container">
+            </main>
+
+        <div id="addModal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Register New Equipment</h3>
+                <form id="addEquipForm">
+                    <input type="text" id="bmId" placeholder="BM ID (e.g. BM001)" required>
+                    <input type="text" id="equipName" placeholder="Equipment Name" required>
+                    <input type="text" id="modelNum" placeholder="Model Number" required>
+                    <input type="text" id="make" placeholder="Manufacturer" required>
+                    <input type="text" id="dept" placeholder="Department" required>
+                    <label>Installation Date</label>
+                    <input type="date" id="installDate" required>
+                    <select id="status">
+                        <option value="Active">Active</option>
+                        <option value="Under Maintenance">Under Maintenance</option>
+                        <option value="Decommissioned">Decommissioned</option>
+                    </select>
+                    <div class="modal-btns">
+                        <button type="submit" class="btn-submit">Save Asset</button>
+                        <button type="button" class="btn-close" onclick="closeModal('addModal')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="detailsModal" class="modal hidden">
+            <div class="modal-content wide">
+                <span class="close-x" onclick="closeModal('detailsModal')">&times;</span>
+                <div id="detailsContent">
+                    </div>
+            </div>
+        </div>
+
+        <div id="issueModal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Add Service/Issue Entry</h3>
+                <form id="issueForm">
+                    <input type="hidden" id="issueTargetId">
+                    <select id="issueType" required>
+                        <option value="Fault">Fault Log</option>
+                        <option value="Maintenance">Maintenance/PPM</option>
+                        <option value="Service">General Service</option>
+                    </select>
+                    <input type="date" id="issueDate" required>
+                    <textarea id="issueDesc" placeholder="Describe the event or work done..." required></textarea>
+                    <div class="modal-btns">
+                        <button type="submit" class="btn-submit">Add to History</button>
+                        <button type="button" class="btn-close" onclick="closeModal('issueModal')">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="equipment_script.js"></script>
+</body>
+</html>
