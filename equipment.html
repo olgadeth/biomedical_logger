@@ -1,156 +1,219 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EQUIP - Professional Asset Library</title>
-    <link rel="stylesheet" href="equipment_style.css">
-</head>
-<body>
-    <div class="dashboard-wrapper">
-        <header class="main-header">
-            <div class="header-left">
-                <a href="index.html" class="back-link">← Dashboard</a>
-                <h1>Equipment Library</h1>
-                <p class="subtitle">Biomedical Asset Management Dashboard</p>
-            </div>
-            <div class="header-right">
-                <div class="search-box">
-                    <input type="text" id="globalSearch" placeholder="Search BM ID or Name..." onkeyup="handleSearch()">
-                </div>
-                <button class="add-btn" onclick="openModal()">➕ Add Equipment</button>
-            </div>
-        </header>
+let assets = JSON.parse(localStorage.getItem('biomed_assets')) || [];
 
-        <section class="kpi-container">
-            <div class="kpi-card">
-                <div class="kpi-icon blue">📦</div>
-                <div class="kpi-data">
-                    <span id="totalCount" class="kpi-number">0</span>
-                    <span class="kpi-label">Total Assets</span>
-                </div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-icon green">✅</div>
-                <div class="kpi-data">
-                    <span id="activeCount" class="kpi-number">0</span>
-                    <span class="kpi-label">Active</span>
-                </div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-icon orange">🔧</div>
-                <div class="kpi-data">
-                    <span id="maintenanceCount" class="kpi-number">0</span>
-                    <span class="kpi-label">Maintenance</span>
-                </div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-icon red">🚨</div>
-                <div class="kpi-data">
-                    <span id="criticalCount" class="kpi-number">0</span>
-                    <span class="kpi-label">Critical Downtime</span>
-                </div>
-            </div>
-        </section>
+window.onload = () => {
+    if (assets.length === 0) {
+        generateDemoData();
+    }
+    refreshUI();
+};
 
-        <section class="table-filters">
-            <select id="deptFilter" onchange="applyFilters()">
-                <option value="">All Departments</option>
-                <option value="ICU">ICU</option>
-                <option value="Radiology">Radiology</option>
-                <option value="Cardiology">Cardiology</option>
-                <option value="OT">Operation Theatre</option>
-            </select>
-            <select id="healthFilter" onchange="applyFilters()">
-                <option value="">All Health Statuses</option>
-                <option value="Good">Good</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Critical">Critical</option>
-            </select>
-        </section>
+// --- DATA GENERATOR (100 Entries) ---
+function generateDemoData() {
+    const devices = [
+        { name: "Ventilator", make: "Dräger", model: "Evita V500", spares: "Oxygen Sensor" },
+        { name: "Infusion Pump", make: "B. Braun", model: "Infusomat P", spares: "Drop Sensor" },
+        { name: "ECG Machine", make: "GE Healthcare", model: "MAC 2000", spares: "Lead Wires" },
+        { name: "Defibrillator", make: "Zoll", model: "R Series", spares: "Pads" },
+        { name: "Patient Monitor", make: "Philips", model: "MX450", spares: "SpO2 Probe" },
+        { name: "Syringe Pump", make: "Terumo", model: "TE-331", spares: "Plunger Clamp" },
+        { name: "Ultrasound", make: "Siemens", model: "Acuson S2000", spares: "Transducer" },
+        { name: "X-Ray Mobile", make: "Shimadzu", model: "Echo", spares: "Collimator Lamp" }
+    ];
+    const depts = ["ICU", "Radiology", "Cardiology", "OT", "Emergency", "Lab", "NICU"];
+    const engineers = ["Sarah Chen", "James Wilson", "Elena Rodriguez", "Ahmed Khan"];
 
-        <div class="table-outer">
-            <table id="assetTable">
-                <thead>
-                    <tr>
-                        <th>BM ID</th>
-                        <th>Equipment Name</th>
-                        <th>Make/Model</th>
-                        <th>Department</th>
-                        <th>Installed By</th>
-                        <th>Spare Parts</th>
-                        <th>Last Service</th>
-                        <th>Downtime</th>
-                        <th>Health</th>
-                        <th>Manual</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    </tbody>
-            </table>
-        </div>
+    for (let i = 1; i <= 100; i++) {
+        const dev = devices[Math.floor(Math.random() * devices.length)];
+        const installDate = new Date(Date.now() - Math.floor(Math.random() * 10000000000)).toISOString().split('T')[0];
+        // Create varied downtime by picking a service date 0 to 40 days ago
+        const daysAgo = Math.floor(Math.random() * 40);
+        const serviceDate = new Date(Date.now() - (daysAgo * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
 
-       <section class="analytics-grid">
-    <div class="chart-container">
-        <h3>Asset Status Distribution</h3>
-        <canvas id="statusPieChart" width="300" height="300"></canvas>
-        <div class="legend" id="statusLegend"></div>
-    </div>
-    <div class="chart-container">
-        <h3>Downtime Analysis (Top 15 Devices)</h3>
-        <canvas id="downtimeBarChart" width="500" height="300"></canvas>
-    </div>
-    <div class="chart-container full-width">
-        <h3>Department Distribution</h3>
-        <canvas id="deptBarChart" width="800" height="300"></canvas>
-    </div>
-</section>
+        assets.push({
+            bmId: `BM${String(i).padStart(3, '0')}`,
+            equipName: dev.name,
+            make: dev.make,
+            modelNum: dev.model,
+            installDate: installDate,
+            installedBy: engineers[Math.floor(Math.random() * engineers.length)],
+            department: depts[Math.floor(Math.random() * depts.length)],
+            serviceDate: serviceDate,
+            spares: dev.spares,
+            manualUrl: "https://example.com/manual.pdf"
+        });
+    }
+    localStorage.setItem('biomed_assets', JSON.stringify(assets));
+}
 
-    <div id="equipModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Register New Asset</h2>
-            <form id="equipForm">
-                <input type="hidden" id="editIndex">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>BM ID*</label>
-                        <input type="text" id="bmId" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Equipment Name*</label>
-                        <input type="text" id="equipName" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Manufacturer</label>
-                        <input type="text" id="make" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Model Number</label>
-                        <input type="text" id="modelNum" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Installation Date</label>
-                        <input type="date" id="installDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Installed By</label>
-                        <input type="text" id="installedBy">
-                    </div>
-                    <div class="form-group">
-                        <label>Department</label>
-                        <select id="department">
-                            <option value="ICU">ICU</option>
-                            <option value="Radiology">Radiology</option>
-                            <option value="Cardiology">Cardiology</option>
-                            <option value="OT">Operation Theatre</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Last Service Date</label>
-                        <input type="date" id="serviceDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Spare Parts Available</label>
-                        <input type="text" id="spares">
-                    </div>
+// --- LOGIC ---
+function calculateDowntime(date) {
+    const diff = new Date() - new Date(date);
+    return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+}
+
+function getHealth(days) {
+    if (days < 5) return { label: 'Good', class: 'badge-good', color: '#28a745' };
+    if (days <= 15) return { label: 'Moderate', class: 'badge-moderate', color: '#fd7e14' };
+    return { label: 'Critical', class: 'badge-critical', color: '#dc3545' };
+}
+
+function refreshUI() {
+    renderTable(assets);
+    calculateKPIs();
+    renderCharts();
+}
+
+function renderTable(data) {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+    data.forEach((item, index) => {
+        const d = calculateDowntime(item.serviceDate);
+        const h = getHealth(d);
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${item.bmId}</strong></td>
+                <td>${item.equipName}</td>
+                <td>${item.make} / ${item.modelNum}</td>
+                <td>${item.department}</td>
+                <td>${item.installedBy}</td>
+                <td>${item.spares}</td>
+                <td>${item.serviceDate}</td>
+                <td>${d} Days</td>
+                <td><span class="badge ${h.class}">${h.label}</span></td>
+                <td><a href="${item.manualUrl}" target="_blank">📄 View</a></td>
+                <td>
+                    <button onclick="editAsset(${index})">✏️</button>
+                    <button onclick="deleteAsset(${index})" style="color:red">🗑️</button>
+                </td>
+            </tr>`;
+    });
+}
+
+function calculateKPIs() {
+    let crit = 0, mod = 0;
+    assets.forEach(a => {
+        const d = calculateDowntime(a.serviceDate);
+        if (d > 15) crit++; else if (d >= 5) mod++;
+    });
+    document.getElementById('totalCount').innerText = assets.length;
+    document.getElementById('activeCount').innerText = assets.length - (crit + mod);
+    document.getElementById('maintenanceCount').innerText = mod;
+    document.getElementById('criticalCount').innerText = crit;
+}
+
+// --- CHART RENDERING ---
+function renderCharts() {
+    drawStatusPie();
+    drawDowntimeBars();
+    drawDeptBarChart();
+}
+
+function drawStatusPie() {
+    const canvas = document.getElementById('statusPieChart');
+    const ctx = canvas.getContext('2d');
+    let c = 0, m = 0, g = 0;
+    assets.forEach(a => {
+        const d = calculateDowntime(a.serviceDate);
+        if (d > 15) c++; else if (d >= 5) m++; else g++;
+    });
+    const data = [g, m, c];
+    const colors = ['#28a745', '#fd7e14', '#dc3545'];
+    let start = 0;
+    ctx.clearRect(0,0,300,300);
+    data.forEach((val, i) => {
+        let slice = (val / assets.length) * 2 * Math.PI;
+        ctx.beginPath(); ctx.moveTo(150,150);
+        ctx.arc(150,150,110, start, start + slice);
+        ctx.fillStyle = colors[i]; ctx.fill();
+        start += slice;
+    });
+}
+
+function drawDowntimeBars() {
+    const canvas = document.getElementById('downtimeBarChart');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,500,300);
+    assets.slice(0, 15).forEach((item, i) => {
+        const d = calculateDowntime(item.serviceDate);
+        const h = Math.min(d * 6, 240);
+        ctx.fillStyle = getHealth(d).color;
+        ctx.fillRect(i * 32 + 30, 270 - h, 25, h);
+        ctx.fillStyle = "#666"; ctx.font = "9px Arial";
+        ctx.fillText(item.bmId, i * 32 + 30, 285);
+    });
+}
+
+function drawDeptBarChart() {
+    const canvas = document.getElementById('deptBarChart');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,900,300);
+    const depts = ["ICU", "Radiology", "Cardiology", "OT", "Emergency", "Lab", "NICU"];
+    const counts = depts.map(d => assets.filter(a => a.department === d).length);
+    const max = Math.max(...counts);
+    counts.forEach((count, i) => {
+        const h = (count / max) * 220;
+        ctx.fillStyle = "#4285f4";
+        ctx.fillRect(i * 110 + 60, 260 - h, 60, h);
+        ctx.fillStyle = "#333"; ctx.font = "12px Arial";
+        ctx.fillText(depts[i], i * 110 + 60, 280);
+        ctx.fillText(count, i * 110 + 85, 250 - h);
+    });
+}
+
+// --- SEARCH & MODAL ---
+function handleSearch() {
+    const q = document.getElementById('globalSearch').value.toLowerCase();
+    renderTable(assets.filter(a => a.bmId.toLowerCase().includes(q) || a.equipName.toLowerCase().includes(q)));
+}
+
+function applyFilters() {
+    const d = document.getElementById('deptFilter').value;
+    const h = document.getElementById('healthFilter').value;
+    let filtered = assets;
+    if (d) filtered = filtered.filter(a => a.department === d);
+    if (h) filtered = filtered.filter(a => getHealth(calculateDowntime(a.serviceDate)).label === h);
+    renderTable(filtered);
+}
+
+function openModal() { document.getElementById('equipModal').style.display = 'block'; }
+function closeModal() { document.getElementById('equipModal').style.display = 'none'; }
+
+document.getElementById('equipForm').onsubmit = (e) => {
+    e.preventDefault();
+    const data = {
+        bmId: document.getElementById('bmId').value,
+        equipName: document.getElementById('equipName').value,
+        make: document.getElementById('make').value,
+        modelNum: document.getElementById('modelNum').value,
+        installDate: document.getElementById('installDate').value,
+        installedBy: document.getElementById('installedBy').value,
+        department: document.getElementById('department').value,
+        serviceDate: document.getElementById('serviceDate').value,
+        spares: document.getElementById('spares').value,
+        manualUrl: document.getElementById('manualUrl').value
+    };
+    const idx = document.getElementById('editIndex').value;
+    if(idx !== "") assets[idx] = data; else assets.push(data);
+    localStorage.setItem('biomed_assets', JSON.stringify(assets));
+    closeModal(); refreshUI();
+};
+
+function editAsset(i) {
+    const a = assets[i];
+    document.getElementById('bmId').value = a.bmId;
+    document.getElementById('equipName').value = a.equipName;
+    document.getElementById('make').value = a.make;
+    document.getElementById('modelNum').value = a.modelNum;
+    document.getElementById('installDate').value = a.installDate;
+    document.getElementById('installedBy').value = a.installedBy;
+    document.getElementById('department').value = a.department;
+    document.getElementById('serviceDate').value = a.serviceDate;
+    document.getElementById('spares').value = a.spares;
+    document.getElementById('manualUrl').value = a.manualUrl;
+    document.getElementById('editIndex').value = i;
+    openModal();
+}
+
+function deleteAsset(i) {
+    if(confirm("Delete?")) { assets.splice(i,1); localStorage.setItem('biomed_assets', JSON.stringify(assets)); refreshUI(); }
+}
